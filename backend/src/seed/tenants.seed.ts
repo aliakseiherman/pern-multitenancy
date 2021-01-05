@@ -5,13 +5,14 @@ class TenantSeed {
   public tenantService: TenantService = new TenantService();
 
   public async seed(): Promise<void> {
-    ['subdomain1', 'subdomain2'].forEach(async (name, i) => {
-      let output = await knex('tenants').where({ name }).count('id as cnt');
+    const tenants = ['subdomain1', 'subdomain2'];
 
-      if (output[0].cnt == 0) {
+    for (let name of tenants) {
+      let exists = await this.tenantService.exists(name);
+      if (!exists) {
         await this.tenantService.create(name);
       }
-    });
+    }
   }
 }
 

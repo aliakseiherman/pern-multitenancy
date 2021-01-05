@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import * as passwordHelper from '../helpers/password.helper';
 import TenantService from '../services/tenant.service';
 import { jwt as jwtConfig } from '../config.json';
-import { knex } from '../database';
 import UserService from '../services/user.service';
 
 class AuthController {

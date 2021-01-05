@@ -4,12 +4,15 @@ class UserSeed {
   public userService: UserService = new UserService();
 
   public async seed(): Promise<void> {
-    [{ username: 'admin', password: '123qwe' }].forEach(async (input, i) => {
-      let exists = await this.userService.exists(input.username);
+
+    const users = [{ username: 'admin', password: '123qwe' }];
+
+    for (let user of users) {
+      let exists = await this.userService.exists(user.username);
       if (!exists) {
-        await this.userService.create(input);
+        await this.userService.create(user);
       }
-    });
+    }
   }
 }
 
