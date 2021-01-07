@@ -7,8 +7,9 @@
 - back-end uses TypeScript
 - tenant resolved by subdomain
 - PostgreSQL
-  - knex.js is used as a Query Builder (lightweight and straightforward library, well-suited for TypeScript)
-  - tables use `tenant_id` column
+  - node-postgres (`pg`) transactions using Pool
+  - (optional) knex.js is used as a Query Builder (lightweight and straightforward library, well-suited for TypeScript)
+  - multitenancy: tables use `tenant_id` column
 - JWT authentication
 - CORS, whitelist of domains
 - hashing password with salt & pepper
