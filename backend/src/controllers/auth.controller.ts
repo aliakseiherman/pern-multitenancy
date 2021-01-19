@@ -32,7 +32,7 @@ class AuthController {
           { expiresIn }
         );
 
-        res.json({ token });
+        res.json({ token, userId: user.id, tenantId: tenant.id });
 
       } else {
         res.sendStatus(401);

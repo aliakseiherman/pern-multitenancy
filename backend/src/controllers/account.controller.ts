@@ -32,7 +32,7 @@ class AccountController {
 
       const token = jwt.sign({ userId: user.id, tenantId: tenant.id }, jwtConfig.secret);
 
-      res.json({ token });
+      res.json({ token, userId: user.id, tenantId: tenant.id });
     } catch (error) {
       next(error);
     }

@@ -1,43 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import './../../styles.css';
-import axios from '../../helpers/axios-helper';
-import { v4 as guid } from 'uuid';
+import './../../styles.css'
+import axios from '../../helpers/axios-helper'
+import { v4 as guid } from 'uuid'
 
-import { Table } from 'feasible-ui';
-import { getSortByFn, paginate } from 'feasible-ui';
-import { OBJECT_PROPERTY_ABOUT, OBJECT_PROPERTY_NAME, SORT_DIRECTION_DESCENDING } from 'feasible-ui';
-import { TextAreaCell } from 'feasible-ui';
-import { Toastr } from 'feasible-ui';
-import { DeleteCell } from '../../components/table-customization/cell/DeleteCell';
+import { Table } from 'feasible-ui'
+import { getSortByFn, paginate } from 'feasible-ui'
+import { OBJECT_PROPERTY_ABOUT, OBJECT_PROPERTY_NAME, SORT_DIRECTION_DESCENDING } from 'feasible-ui'
+import { TextAreaCell } from 'feasible-ui'
+import { Toastr } from 'feasible-ui'
+import { DeleteCell } from '../../components/table-customization/cell/DeleteCell'
+import store, { LOGOUT } from '../../store/store'
 
 export const App = (props) => {
 
-  const [tableGuid] = useState(guid());
-  const [filterConfig, setFilterConfig] = useState(null);
+  const [tableGuid] = useState(guid())
+  const [filterConfig, setFilterConfig] = useState(null)
 
-  const [carBrands, setCarBrands] = useState([]);
+  const [carBrands, setCarBrands] = useState([])
 
   const getTableData = (filterConfig) => {
 
     if (!filterConfig) {
-      return [];
+      return []
     }
 
-    let carBrands2 = carBrands.sort(getSortByFn(filterConfig.columnName));
+    let carBrands2 = carBrands.sort(getSortByFn(filterConfig.columnName))
 
     if (!filterConfig.isAscending) {
-      carBrands2 = carBrands.reverse();
+      carBrands2 = carBrands.reverse()
     }
 
-    return paginate(carBrands2, filterConfig.size, filterConfig.page);
+    return paginate(carBrands2, filterConfig.size, filterConfig.page)
   }
 
-  const [tableData, setTableData] = useState(getTableData(filterConfig));
+  const [tableData, setTableData] = useState(getTableData(filterConfig))
 
   const exit = () => {
-    localStorage.removeItem('token');
-    window.location = '/';
+    store.dispatch({ type: LOGOUT })
   }
 
   const create = () => {
@@ -45,7 +45,7 @@ export const App = (props) => {
       name: name,
       about: about
     }).then((result) => {
-      setCarBrands(oldArray => [...oldArray, result.data]);
+      setCarBrands(oldArray => [...oldArray, result.data])
     })
   }
 
@@ -53,15 +53,15 @@ export const App = (props) => {
     axios.get('/v1/car-brands').then((result) => {
       setCarBrands(result.data)
     })
-  }, []);
+  }, [])
 
   useEffect(() => {
-    setTableData(getTableData(filterConfig));
+    setTableData(getTableData(filterConfig))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterConfig, carBrands]);
+  }, [filterConfig, carBrands])
 
-  const [name, setName] = useState('');
-  const [about, setAbout] = useState('');
+  const [name, setName] = useState('')
+  const [about, setAbout] = useState('')
 
   return (
     <div style={{ maxWidth: '800px', padding: '10px' }}>

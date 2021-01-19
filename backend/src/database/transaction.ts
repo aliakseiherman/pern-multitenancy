@@ -2,7 +2,7 @@ import { PoolClient } from "pg"
 import { pool } from "../database"
 
 const tx = async (callback: (client: PoolClient) => void) => {
-  const client = await pool.connect();
+  const client = await pool.connect()
 
   try {
     await client.query('BEGIN')

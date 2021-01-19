@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
-import { Toastr } from 'feasible-ui';
+import { Toastr } from 'feasible-ui'
 
-import http from '../../helpers/axios-helper';
-import { Link } from 'react-router-dom';
+import http from '../../helpers/axios-helper'
+import { Link } from 'react-router-dom'
+import store, { SET_USER } from '../../store/store'
 
 export const Register = (props) => {
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(true);
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleSubmit = (e) => {
     http
@@ -17,12 +17,12 @@ export const Register = (props) => {
         username: username,
         password: password
       })
-      .then(function (result) {
-        if (result.data.token) {
-          localStorage.setItem('token', result.data.token);
-          window.location = '/';
+      .then(function (res) {
+        if (res.data.token) {
+          localStorage.setItem('token', res.data.token)
+          store.dispatch({ type: SET_USER, userId: res.data.userId })
         }
-      });
+      })
   }
 
   return (
@@ -34,7 +34,7 @@ export const Register = (props) => {
             <span>username</span>
           </div>
           <div style={{ display: 'flex', flex: '1' }}>
-            <input name='username' type='text' value={username} onChange={(e) => { setUsername(e.target.value); }} />
+            <input name='username' type='text' value={username} onChange={(e) => { setUsername(e.target.value) }} />
           </div>
         </div>
 
