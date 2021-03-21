@@ -55,6 +55,7 @@ const App = props => {
 
   useEffect(() => {
     axios.get('/v1/car-brands').then((result) => {
+      console.log(result)
       setCarBrands(result.data)
     })
   }, [])
