@@ -1,6 +1,6 @@
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
-import store from '../store/store'
+import { store } from '../redux/user/store'
 
 export const PrivateRoute = ({ component: Component, ...rest }) => {
 

@@ -1,24 +1,31 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { logoutSaga, loginSaga } from './sagas'
+
+const sagaMiddleware = createSagaMiddleware()
 
 export const SET_TENANT = 'SET_TENANT'
 export const SET_USER = 'SET_USER'
 export const LOGOUT = 'LOGOUT'
 
-const sagaMiddleware = createSagaMiddleware()
+const initialState = {
+  userId: null,
+  tenantId: null,
+}
 
-function data(state = {}, action) {
+function data(state = initialState, action) {
   switch (action.type) {
     case SET_TENANT:
+      const { tenantId } = action.payload
       return {
         ...state,
-        tenantId: action.tenantId
+        tenantId
       }
     case SET_USER:
+      const { userId } = action.payload
       return {
         ...state,
-        userId: action.userId
+        userId
       }
     case LOGOUT:
       return {
@@ -37,4 +44,4 @@ const store = createStore(reducer, applyMiddleware(sagaMiddleware))
 sagaMiddleware.run(logoutSaga)
 sagaMiddleware.run(loginSaga)
 
-export default store
+export { store }

@@ -1,5 +1,4 @@
 import React from 'react'
-import { getRowClass } from 'feasible-ui'
 
 export const ModelsAvailableRow = (props) => {
 

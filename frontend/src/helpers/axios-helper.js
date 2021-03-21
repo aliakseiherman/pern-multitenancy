@@ -1,4 +1,4 @@
-import { toastr } from 'feasible-ui'
+import { toastr } from '../components/toastr/toastr-service'
 
 const axios = require("axios")
 
@@ -26,8 +26,6 @@ axios.interceptors.response.use(function (response) {
 }, function (error) {
   console.error(error)
 
-  window.location.hash = '#/login'
-
   if (error.response.data) {
     toastr.error(error.response.data.error)
   }
@@ -38,27 +36,27 @@ const baseUrl = 'http://localhost:8081'
 
 function get(url) {
   return axios.get(baseUrl + url)
-}
+};
 
 function post(url, data) {
   return axios.post(baseUrl + url, data)
-}
+};
 
 function put(url, data) {
   return axios.put(baseUrl + url, data)
-}
+};
 
 function _delete(url, data) {
   return axios.delete(baseUrl + url, data)
-}
+};
 
 function patch(url, data) {
   return axios.patch(baseUrl + url, data)
-}
+};
 
 function options(url, data) {
   return axios.options(baseUrl + url, data)
-}
+};
 
 export default {
   get: get,

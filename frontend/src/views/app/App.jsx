@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
 
 import './../../styles.css'
 import axios from '../../helpers/axios-helper'
 import { v4 as guid } from 'uuid'
 
-import { Table } from 'feasible-ui'
-import { getSortByFn, paginate } from 'feasible-ui'
-import { OBJECT_PROPERTY_ABOUT, OBJECT_PROPERTY_NAME, SORT_DIRECTION_DESCENDING } from 'feasible-ui'
-import { TextAreaCell } from 'feasible-ui'
-import { Toastr } from 'feasible-ui'
 import { DeleteCell } from '../../components/table-customization/cell/DeleteCell'
-import store, { LOGOUT } from '../../store/store'
+import { Table } from '../../components/table/Table'
+import { OBJECT_PROPERTY_ABOUT, OBJECT_PROPERTY_NAME, SORT_DIRECTION_DESCENDING } from '../../components/table/constants'
+import { TextAreaCell } from '../../components/table/cell/TextAreaCell'
+import { Toastr } from '../../components/toastr/Toastr'
+import { getSortByFn, paginate } from '../../helpers/array-helper'
 
-export const App = (props) => {
+import { addCarBrand, deleteCarBrand, setCarBrands } from '../../redux/car-brands/actions'
+
+import { store, LOGOUT } from '../../redux/user/store'
+import { getCarBrands } from '../../redux/car-brands/selectors'
+
+const App = props => {
+  const { carBrands, setCarBrands, addCarBrand, deleteCarBrand } = props
 
   const [tableGuid] = useState(guid())
   const [filterConfig, setFilterConfig] = useState(null)
-
-  const [carBrands, setCarBrands] = useState([])
 
   const getTableData = (filterConfig) => {
 
@@ -45,7 +49,7 @@ export const App = (props) => {
       name: name,
       about: about
     }).then((result) => {
-      setCarBrands(oldArray => [...oldArray, result.data])
+      addCarBrand(result.data)
     })
   }
 
@@ -86,7 +90,7 @@ export const App = (props) => {
           columns={[
             {
               name: 'Id',
-              objectProperty: 'id',
+              objectProperty: '_id',
               style: { flex: '0 0 40px' },
               isSortable: true
             }, {
@@ -101,7 +105,7 @@ export const App = (props) => {
               isSortable: true,
               template: TextAreaCell,
               onChange: (row) => {
-                axios.put(`/v1/car-brands/${row.id}`, {
+                axios.put(`/v1/car-brands/${row._id}`, {
                   about: row.about
                 }).then(() => {
 
@@ -111,18 +115,18 @@ export const App = (props) => {
               style: { flex: '0 0 60px' },
               template: DeleteCell,
               onDelete: (row) => {
-                axios.delete(`/v1/car-brands/${row.id}`, {
+                axios.delete(`/v1/car-brands/${row._id}`, {
                   about: row.about
                 }).then(() => {
                   axios.get('/v1/car-brands').then((result) => {
-                    setCarBrands(result.data)
+                    deleteCarBrand(row)
                   })
                 })
               }
             }
           ]}
           defaultSize={10}
-          defaultSortColumnName={'id'}
+          defaultSortColumnName={'_id'}
           defaultSortDirection={SORT_DIRECTION_DESCENDING}
           setFilterConfig={setFilterConfig}
           filterConfig={filterConfig}
@@ -137,3 +141,13 @@ export const App = (props) => {
     </div>
   )
 }
+
+const mapStateToProps = (state) => {
+  return {
+    carBrands: getCarBrands(state)
+  }
+}
+
+const mapDispatchToProps = { addCarBrand, deleteCarBrand, setCarBrands }
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

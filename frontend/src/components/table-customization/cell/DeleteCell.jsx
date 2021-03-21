@@ -1,5 +1,5 @@
 import React from 'react'
-import { ConfirmationButton } from 'feasible-ui'
+import { ConfirmationButton } from '../../button/confirmation-button/ConfirmationButton'
 
 export const DeleteCell = (props) => {
 

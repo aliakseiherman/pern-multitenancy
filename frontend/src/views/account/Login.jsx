@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 
-import { Toastr } from 'feasible-ui'
-
 import http from '../../helpers/axios-helper'
 import { Link } from 'react-router-dom'
-import store, { SET_USER } from '../../store/store'
+import { Toastr } from '../../components/toastr/Toastr'
 
 export const Login = (props) => {
 
@@ -19,10 +17,10 @@ export const Login = (props) => {
         password: password,
         rememberMe: rememberMe
       })
-      .then(function (res) {
-        if (res.data.token) {
-          localStorage.setItem('token', res.data.token)
-          store.dispatch({ type: SET_USER, userId: res.data.userId })
+      .then(function (result) {
+        if (result.data.token) {
+          localStorage.setItem('token', result.data.token)
+          window.location = '/'
         }
       })
   }
